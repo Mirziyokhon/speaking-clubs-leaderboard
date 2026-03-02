@@ -82,14 +82,14 @@ function InstructionsContent() {
                 {/* Bringing Friend */}
                 <div className="flex items-start gap-4">
                   <div className="bg-purple-100 rounded-full p-3 flex-shrink-0">
-                    <span className="text-2xl font-bold text-purple-600">+1</span>
+                    <span className="text-2xl font-bold text-purple-600">+2</span>
                   </div>
                   <div className="flex-1">
                     <h3 className="font-semibold text-slate-900 text-lg mb-1">
                       {t('instructions.bringingFriend.title')}
                     </h3>
                     <p className="text-slate-600">
-                      {t('instructions.bringingFriend.description')}
+                      Earn 2 points for bringing a new friend to join the club
                     </p>
                   </div>
                 </div>
@@ -131,10 +131,10 @@ function InstructionsContent() {
                       <Badge className="bg-yellow-500 hover:bg-yellow-600">{t('instructions.firstPlace.badge')}</Badge>
                     </div>
                     <p className="text-slate-600 mb-2">
-                      <strong>Prize:</strong> {t('instructions.firstPlace.prize')}
+                      {t('instructions.firstPlace.prize')}
                     </p>
                     <p className="text-sm text-slate-500">
-                      {t('instructions.firstPlace.description')}
+                      One winner per club (4 clubs = 4 winners total across main clubs)
                     </p>
                   </div>
                 </div>
@@ -152,10 +152,10 @@ function InstructionsContent() {
                       <Badge className="bg-gray-400 hover:bg-gray-500">{t('instructions.secondPlace.badge')}</Badge>
                     </div>
                     <p className="text-slate-600 mb-2">
-                      <strong>Prize:</strong> {t('instructions.secondPlace.prize')}
+                      {t('instructions.secondPlace.prize')}
                     </p>
                     <p className="text-sm text-slate-500">
-                      {t('instructions.secondPlace.description')}
+                      One winner per club (4 clubs = 4 winners total across main clubs)
                     </p>
                   </div>
                 </div>
@@ -173,10 +173,10 @@ function InstructionsContent() {
                       <Badge className="bg-orange-500 hover:bg-orange-600">{t('instructions.thirdPlace.badge')}</Badge>
                     </div>
                     <p className="text-slate-600 mb-2">
-                      <strong>Prize:</strong> {t('instructions.thirdPlace.prize')}
+                      <strong>Prize:</strong> Free Mock Technical Interview from IT Professional
                     </p>
                     <p className="text-sm text-slate-500">
-                      {t('instructions.thirdPlace.description')}
+                      One winner per club (4 clubs = 4 winners total across main clubs)
                     </p>
                   </div>
                 </div>
@@ -197,12 +197,57 @@ function InstructionsContent() {
             <CardContent className="pt-6">
               <div className="space-y-4">
                 <p className="text-slate-700 leading-relaxed">
-                  {t('instructions.pointsReset.description')}
+                  All points are valid for one month only. When the next month begins, the previous month's points will freeze and everyone will start earning points from 0 for the new month.
                 </p>
                 <div className="bg-white border border-red-200 rounded-lg p-4">
                   <p className="text-sm text-slate-600">
-                    <strong>Example:</strong> {t('instructions.pointsReset.example')}
+                    <strong>Example:</strong> If you earn points in March, they will be frozen at the end of March. In April, everyone starts fresh with 0 points and begins earning new points for the April competition.
                   </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Badges Section */}
+        <div className="mb-12 fade-in">
+          <div className="mb-8">
+            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-2 text-balance">
+              Special Achievement Badges
+            </h2>
+            <p className="text-slate-600 text-lg">
+              Members can earn special badges according to the frequency and quality of their participation in clubs
+            </p>
+          </div>
+
+          <Card className="border-purple-200 shadow-lg bg-gradient-to-br from-purple-50 to-pink-50">
+            <CardHeader className="border-b border-purple-200">
+              <CardTitle className="flex items-center gap-2 text-purple-900">
+                <Gift className="w-6 h-6" />
+                Achievement Badges
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-8">
+              <div className="space-y-6">
+                {/* Consistency Hero Badge */}
+                <div className="flex items-start gap-4">
+                  <div className="bg-gradient-to-br from-purple-300 to-pink-400 rounded-full p-3 flex-shrink-0">
+                    <span className="text-2xl">🏆</span>
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-semibold text-slate-900 text-lg">
+                        Consistency Hero
+                      </h3>
+                      <Badge className="bg-purple-500 hover:bg-purple-600">Most Honorable</Badge>
+                    </div>
+                    <p className="text-slate-600 mb-2">
+                      <strong>Prize:</strong> Shortlist into TechJobs candidates that will help you start your career in IT
+                    </p>
+                    <p className="text-sm text-slate-500">
+                      Awarded for 100% participation over a long time period and consistent quality in club activities
+                    </p>
+                  </div>
                 </div>
               </div>
             </CardContent>

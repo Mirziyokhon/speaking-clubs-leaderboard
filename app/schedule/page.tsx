@@ -43,9 +43,12 @@ function ScheduleContent() {
   };
 
   const getSessionsForDate = (day: number) => {
-    const dateStr = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
-      .toISOString()
-      .split('T')[0];
+    // Use local timezone to avoid date shifting
+    const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const dayStr = String(day).padStart(2, '0');
+    const dateStr = `${year}-${month}-${dayStr}`;
     return allSessions.filter((session) => session.date === dateStr);
   };
 

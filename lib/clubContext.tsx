@@ -23,7 +23,6 @@ export interface Session {
   floor: number;
   duration: number; // in minutes
   instructor: string;
-  maxCapacity: number;
   attendees: number;
 }
 
@@ -103,7 +102,6 @@ const defaultClubs: Club[] = [
         floor: 1,
         duration: 60,
         instructor: 'Sarah Mitchell',
-        maxCapacity: 15,
         attendees: 12,
       },
       {
@@ -116,7 +114,6 @@ const defaultClubs: Club[] = [
         floor: 2,
         duration: 75,
         instructor: 'James Wilson',
-        maxCapacity: 20,
         attendees: 18,
       },
       {

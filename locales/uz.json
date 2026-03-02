@@ -83,21 +83,21 @@
     "prizeBreakdown": "Mukofotlar Taqsimoti (Jami 12 Mukofot)",
     "firstPlace": {
       "title": "1-o'rin",
-      "badge": "3 G'olib",
+      "badge": "4 G'olib",
       "prize": "Mukofot: Temurbek Adhamov bilan biznes tushligi (Najot Ta'lim asoschisi)",
-      "description": "Har bir klubbdan bir g'olib (4 klub = asosiy klublar bo'yicha jami 3 g'olib)"
+      "description": "Har bir klubbdan bir g'olib (4 klub = asosiy klublar bo'yicha jami 4 g'olib)"
     },
     "secondPlace": {
       "title": "2-o'rin",
-      "badge": "3 G'olib",
-      "prize": "Mukofot: Bepul HR Intervyusi (Qiymati: 200 000 so'm)",
-      "description": "Har bir klubbdan bir g'olib (4 klub = asosiy klublar bo'yicha jami 3 g'olib)"
+      "badge": "4 G'olib",
+      "prize": "Mukofot: Bepul HR Intervyusi (Qiymati: 600 000 so'm)",
+      "description": "Har bir klubbdan bir g'olib (4 klub = asosiy klublar bo'yicha jami 4 g'olib)"
     },
     "thirdPlace": {
       "title": "3-o'rin",
-      "badge": "3 G'olib",
-      "prize": "Mukofot: Professional O'qituvchilardan Bepul Texnik Intervyu",
-      "description": "Har bir klubbdan bir g'olib (4 klub = asosiy klublar bo'yicha jami 3 g'olib)"
+      "badge": "4 G'olib",
+      "prize": "Mukofot: IT Professionaldan Bepul Texnik Intervyu",
+      "description": "Har bir klubbdan bir g'olib (4 klub = asosiy klublar bo'yicha jami 4 g'olib)"
     },
     "pointsReset": {
       "title": "Muhim: Ballarni Tiklash",

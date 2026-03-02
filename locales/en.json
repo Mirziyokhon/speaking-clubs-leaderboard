@@ -82,21 +82,21 @@
     "prizeBreakdown": "Prize Breakdown (12 Total Prizes)",
     "firstPlace": {
       "title": "1st Place",
-      "badge": "3 Winners",
+      "badge": "4 Winners",
       "prize": "Prize: Business lunch with Temurbek Adhamov (Founder of Najot Talim)",
-      "description": "One winner per club (4 clubs = 3 winners total across main clubs)"
+      "description": "One winner per club (4 clubs = 4 winners total across main clubs)"
     },
     "secondPlace": {
       "title": "2nd Place",
-      "badge": "3 Winners",
-      "prize": "Prize: Free Mock HR Interview (Value: 200,000 soums)",
-      "description": "One winner per club (4 clubs = 3 winners total across main clubs)"
+      "badge": "4 Winners",
+      "prize": "Prize: Free Mock HR Interview (Value: 600,000 soums)",
+      "description": "One winner per club (4 clubs = 4 winners total across main clubs)"
     },
     "thirdPlace": {
       "title": "3rd Place",
-      "badge": "3 Winners",
-      "prize": "Prize: Free Mock Technical Interview from Professional Teachers",
-      "description": "One winner per club (4 clubs = 3 winners total across main clubs)"
+      "badge": "4 Winners",
+      "prize": "Prize: Free Mock Technical Interview from IT Professional",
+      "description": "One winner per club (4 clubs = 4 winners total across main clubs)"
     },
     "pointsReset": {
       "title": "Important: Points Reset",

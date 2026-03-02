@@ -34,7 +34,6 @@ function AddSessionContent() {
     floor: 1,
     duration: 60,
     instructor: '',
-    maxCapacity: 15,
     attendees: 0,
   });
 
@@ -214,24 +213,6 @@ function AddSessionContent() {
                     placeholder="e.g., Sarah Mitchell"
                     required
                   />
-                </div>
-
-                {/* Max Capacity */}
-                <div className="space-y-2">
-                  <Label htmlFor="maxCapacity">Max Capacity</Label>
-                  <Select value={formData.maxCapacity.toString()} onValueChange={(value) => handleInputChange('maxCapacity', parseInt(value))}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="5">5 participants</SelectItem>
-                      <SelectItem value="10">10 participants</SelectItem>
-                      <SelectItem value="15">15 participants</SelectItem>
-                      <SelectItem value="20">20 participants</SelectItem>
-                      <SelectItem value="25">25 participants</SelectItem>
-                      <SelectItem value="30">30 participants</SelectItem>
-                    </SelectContent>
-                  </Select>
                 </div>
               </div>
 
