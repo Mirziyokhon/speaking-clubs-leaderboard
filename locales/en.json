@@ -1,0 +1,117 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "noData": "No data available",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "close": "Close"
+  },
+  "navigation": {
+    "leaderboard": "Leaderboard",
+    "schedule": "Schedule",
+    "instructions": "Instructions",
+    "admin": "Admin"
+  },
+  "header": {
+    "title": "Speaking Clubs",
+    "subtitle": "Celebrate excellence in language learning"
+  },
+  "leaderboard": {
+    "title": "Speaking Clubs Leaderboard",
+    "rank": "Rank",
+    "name": "Name",
+    "points": "Points",
+    "sessions": "Sessions",
+    "lastSession": "Last Session",
+    "badges": "Badges",
+    "noParticipants": "No participants yet",
+    "chooseMonth": "Choose month",
+    "toSeeYourPoints": "to see your points",
+    "monthNotOccurred": "This month hasn't occurred yet. The leaderboard will be available once the month begins.",
+    "currentData": "Current data: {{month}} {{year}}",
+    "footer": "🌟 Keep learning, keep speaking, keep improving! Your dedication inspires us all."
+  },
+  "schedule": {
+    "title": "Session Schedule",
+    "subtitle": "View and manage your speaking club sessions",
+    "clubLegend": "Club Legend",
+    "backToLeaderboard": "Back to Leaderboard",
+    "noSessions": "No sessions",
+    "instructor": "Instructor",
+    "attendees": "Attendees",
+    "maxCapacity": "Max Capacity",
+    "duration": "Duration",
+    "topic": "Topic",
+    "room": "Room",
+    "floor": "Floor",
+    "time": "Time",
+    "minutes": "minutes",
+    "participants": "participants",
+    "close": "Close"
+  },
+  "instructions": {
+    "pointSystemGuide": "Point System Guide",
+    "pointSystemSubtitle": "Earn points through participation and achievements in your speaking club sessions.",
+    "howToEarnPoints": "How to Earn Points",
+    "attendance": {
+      "title": "Attendance",
+      "description": "Earn 1 point for attending each session"
+    },
+    "activeSpeaking": {
+      "title": "Active Speaking",
+      "description": "Earn 1 point for actively participating and speaking during discussions"
+    },
+    "winningActivity": {
+      "title": "Winning Activity",
+      "description": "Earn 2 points for winning games, competitions, or performing exceptionally"
+    },
+    "bringingFriend": {
+      "title": "Bringing a Friend",
+      "description": "Earn 1 point for bringing a new friend to join the club"
+    },
+    "monthlyPrizes": "Monthly Prizes",
+    "monthlyPrizesSubtitle": "At the end of each month, the top 3 participants from each club receive awards.",
+    "prizeBreakdown": "Prize Breakdown (12 Total Prizes)",
+    "firstPlace": {
+      "title": "1st Place",
+      "badge": "3 Winners",
+      "prize": "Prize: Business lunch with Temurbek Adhamov (Founder of Najot Talim)",
+      "description": "One winner per club (4 clubs = 3 winners total across main clubs)"
+    },
+    "secondPlace": {
+      "title": "2nd Place",
+      "badge": "3 Winners",
+      "prize": "Prize: Free Mock HR Interview (Value: 200,000 soums)",
+      "description": "One winner per club (4 clubs = 3 winners total across main clubs)"
+    },
+    "thirdPlace": {
+      "title": "3rd Place",
+      "badge": "3 Winners",
+      "prize": "Prize: Free Mock Technical Interview from Professional Teachers",
+      "description": "One winner per club (4 clubs = 3 winners total across main clubs)"
+    },
+    "pointsReset": {
+      "title": "Important: Points Reset",
+      "description": "When top 3 participants from each club receive their monthly awards, all their accumulated points are reset to 0. This ensures a fair competition for everyone each month.",
+      "example": "Example: If you finish in 1st, 2nd, or 3rd place in March and receive your prize, your points will be reset to 0 starting in April, giving you a fresh start for the new month."
+    }
+  },
+  "clubs": {
+    "english": "English",
+    "russian": "Russian", 
+    "japanese": "Japanese",
+    "german": "German"
+  },
+  "meta": {
+    "title": "Speaking Clubs Leaderboard",
+    "description": "Track your progress in language speaking clubs and compete with friends!"
+  }
+}

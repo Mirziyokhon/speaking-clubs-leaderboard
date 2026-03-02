@@ -1,0 +1,118 @@
+{
+  "common": {
+    "loading": "Yuklanmoqda...",
+    "noData": "Ma'lumot mavjud emas",
+    "back": "Orqaga",
+    "next": "Keyingi",
+    "previous": "Oldingi",
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "edit": "Tahrirlash",
+    "delete": "O'chirish",
+    "add": "Qo'shish",
+    "search": "Qidirish",
+    "filter": "Filtrlash",
+    "close": "Yopish"
+  },
+  "navigation": {
+    "leaderboard": "Reyting",
+    "schedule": "Jadval",
+    "instructions": "Ko'rsatmalar",
+    "admin": "Admin"
+  },
+  "header": {
+    "title": "So'zlashuv Klublari",
+    "subtitle": "Til o'rganishdagi a'lochilikni nishonlang"
+  },
+  "leaderboard": {
+    "title": "Reyting",
+    "subtitle": "O'z progressingizni kuzating va do'stlaringiz bilan bellashing",
+    "rank": "O'rin",
+    "name": "Ism",
+    "points": "Ball",
+    "sessions": "Sessiyalar",
+    "lastSession": "Oxirgi sessiya",
+    "badges": "Nishonlar",
+    "noParticipants": "Hali ishtirokchilar yo'q",
+    "chooseMonth": "Oyni tanlang",
+    "toSeeYourPoints": "ballaringizni ko'rish uchun",
+    "monthNotOccurred": "Bu oy hali bo'lmagan. Reyting oy boshlanganda mavjud bo'ladi.",
+    "currentData": "Joriy ma'lumot: {{month}} {{year}}",
+    "footer": "🌟 O'rganishda davom eting, so'zlashishda davom eting, yaxshilanishda davom eting! Sizning sadoqatingiz barchamizni ilhomlantiradi."
+  },
+  "schedule": {
+    "title": "Sessiyalar Jadvali",
+    "subtitle": "So'zlashuv klubi sessiyalaringizni ko'ring va boshqaring",
+    "clubLegend": "Klublar afsonasi",
+    "backToLeaderboard": "Reytingga qaytish",
+    "noSessions": "Sessiyalar yo'q",
+    "instructor": "O'qituvchi",
+    "attendees": "Ishtirokchilar",
+    "maxCapacity": "Maksimal sig'im",
+    "duration": "Davomiyligi",
+    "topic": "Mavzu",
+    "room": "Xona",
+    "floor": "Qavat",
+    "time": "Vaqt",
+    "minutes": "daqiqa",
+    "participants": "ishtirokchi",
+    "close": "Yopish"
+  },
+  "instructions": {
+    "pointSystemGuide": "Ball Tizimi Yo'riqnoma",
+    "pointSystemSubtitle": "So'zlashuv klubi sessiyalarida ishtirok etish va yutuqlar orqali ball to'plang.",
+    "howToEarnPoints": "Ballarni Qanday Olish Mumkin",
+    "attendance": {
+      "title": "Qatnashish",
+      "description": "Har bir sessiyada qatnashish uchun 1 ball oling"
+    },
+    "activeSpeaking": {
+      "title": "Faol So'zlashish",
+      "description": "Munozaralarda faol ishtirok etish va so'zlashish uchun 1 ball oling"
+    },
+    "winningActivity": {
+      "title": "Faoliyatda G'alaba Qozonish",
+      "description": "O'yinlarda, tanlovlarda g'alaba qozonish yoki a'lo ko'rsatkichlar uchun 2 ball oling"
+    },
+    "bringingFriend": {
+      "title": "Do'st Olib Kelish",
+      "description": "Klubga yangi do'st olib kelish uchun 1 ball oling"
+    },
+    "monthlyPrizes": "Oylik Mukofotlar",
+    "monthlyPrizesSubtitle": "Har oy oxirida har bir klubdan eng yaxshi 3 ishtirokchi mukofotlarni oladi.",
+    "prizeBreakdown": "Mukofotlar Taqsimoti (Jami 12 Mukofot)",
+    "firstPlace": {
+      "title": "1-o'rin",
+      "badge": "3 G'olib",
+      "prize": "Mukofot: Temurbek Adhamov bilan biznes tushligi (Najot Ta'lim asoschisi)",
+      "description": "Har bir klubbdan bir g'olib (4 klub = asosiy klublar bo'yicha jami 3 g'olib)"
+    },
+    "secondPlace": {
+      "title": "2-o'rin",
+      "badge": "3 G'olib",
+      "prize": "Mukofot: Bepul HR Intervyusi (Qiymati: 200 000 so'm)",
+      "description": "Har bir klubbdan bir g'olib (4 klub = asosiy klublar bo'yicha jami 3 g'olib)"
+    },
+    "thirdPlace": {
+      "title": "3-o'rin",
+      "badge": "3 G'olib",
+      "prize": "Mukofot: Professional O'qituvchilardan Bepul Texnik Intervyu",
+      "description": "Har bir klubbdan bir g'olib (4 klub = asosiy klublar bo'yicha jami 3 g'olib)"
+    },
+    "pointsReset": {
+      "title": "Muhim: Ballarni Tiklash",
+      "description": "Har bir klubdan eng yaxshi 3 ishtirokchi oylik mukofotlarini olganda, ularning to'plangan barcha ballari 0 ga tiklanadi. Bu har kishi uchun har oy adolatli raqobatni ta'minlaydi.",
+      "example": "Misol: Agar siz mart oyida 1, 2 yoki 3-o'rinni egallab, mukofotni olsangiz, ballaringiz apreldan boshlab 0 ga tiklanadi, bu esa sizga yangi oy uchun yangi boshlanish beradi."
+    }
+  },
+  "clubs": {
+    "english": "Ingliz tili",
+    "russian": "Rus tili",
+    "japanese": "Yapon tili", 
+    "german": "Nemis tili"
+  },
+  "meta": {
+    "title": "So'zlashuv Klublari Reytingi",
+    "description": "Til so'zlashuv klublaridagi progressingizni kuzating va do'stlaringiz bilan raqobatlang!"
+  }
+}
