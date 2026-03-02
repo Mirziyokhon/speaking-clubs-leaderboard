@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Plus, Edit2, Trash2 } from 'lucide-react';
+import { Plus, Edit2, Trash2, Download, Upload } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,7 +27,7 @@ import { useToast } from '@/hooks/use-toast';
 
 function DashboardContent() {
   const router = useRouter();
-  const { clubs, deleteParticipant } = useClubs();
+  const { clubs, deleteParticipant, exportData, importData } = useClubs();
   const { toast } = useToast();
   const [selectedClub, setSelectedClub] = useState('English');
   const [deleteConfirm, setDeleteConfirm] = useState<{
@@ -35,8 +35,41 @@ function DashboardContent() {
     participantId: string;
     name: string;
   } | null>(null);
+  const [isImporting, setIsImporting] = useState(false);
 
   const currentClub = clubs.find((c) => c.name === selectedClub);
+
+  const handleExport = () => {
+    exportData();
+    toast({
+      title: 'Success',
+      description: 'Data exported successfully! Check your downloads folder.',
+    });
+  };
+
+  const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setIsImporting(true);
+    try {
+      await importData(file);
+      toast({
+        title: 'Success',
+        description: 'Data imported successfully! All changes have been applied.',
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to import data. Please check the file format.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsImporting(false);
+      // Reset the file input
+      event.target.value = '';
+    }
+  };
 
   const handleDelete = () => {
     if (deleteConfirm) {
@@ -80,13 +113,41 @@ function DashboardContent() {
           <Card>
             <CardHeader className="flex items-center justify-between flex-col sm:flex-row gap-4">
               <CardTitle className="text-lg sm:text-2xl">{selectedClub} Club - Participants</CardTitle>
-              <Button
-                onClick={() => router.push('/admin/add')}
-                className="gap-2 bg-green-600 hover:bg-green-700 w-full sm:w-auto"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Add Participant</span>
-              </Button>
+              <div className="flex gap-2 w-full sm:w-auto">
+                <Button
+                  onClick={handleExport}
+                  className="gap-2 bg-blue-600 hover:bg-blue-700 flex-1 sm:flex-initial"
+                >
+                  <Download className="w-4 h-4" />
+                  <span className="hidden sm:inline">Export</span>
+                  <span className="sm:hidden">📥</span>
+                </Button>
+                <div className="relative">
+                  <input
+                    type="file"
+                    accept=".json"
+                    onChange={handleImport}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    disabled={isImporting}
+                  />
+                  <Button
+                    className="gap-2 bg-purple-600 hover:bg-purple-700 flex-1 sm:flex-initial"
+                    disabled={isImporting}
+                  >
+                    <Upload className="w-4 h-4" />
+                    <span className="hidden sm:inline">{isImporting ? 'Importing...' : 'Import'}</span>
+                    <span className="sm:hidden">{isImporting ? '⏳' : '📤'}</span>
+                  </Button>
+                </div>
+                <Button
+                  onClick={() => router.push('/admin/add')}
+                  className="gap-2 bg-green-600 hover:bg-green-700 flex-1 sm:flex-initial"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span className="hidden sm:inline">Add</span>
+                  <span className="sm:hidden">➕</span>
+                </Button>
+              </div>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">

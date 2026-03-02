@@ -210,7 +210,7 @@ function InstructionsContent() {
         </div>
 
         {/* Badges Section */}
-        <div className="mb-12 fade-in">
+        <div className="mb-20 fade-in">
           <div className="mb-8">
             <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-2 text-balance">
               Special Achievement Badges

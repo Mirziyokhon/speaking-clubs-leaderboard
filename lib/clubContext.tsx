@@ -51,6 +51,8 @@ export interface ClubsContextType {
   updateSession: (clubName: string, id: string, session: Session) => void;
   deleteSession: (clubName: string, id: string) => void;
   forceReload: () => void;
+  exportData: () => void;
+  importData: (file: File) => Promise<void>;
 }
 
 const defaultClubs: Club[] = [
@@ -372,7 +374,7 @@ const defaultClubs: Club[] = [
 const ClubsContext = createContext<ClubsContextType | undefined>(undefined);
 
 export function ClubsProvider({ children }: { children: ReactNode }) {
-  const [clubs, setClubs, forceReload] = useLocalStorageSync('clubs', defaultClubs);
+  const [clubs, setClubs, forceReload, exportData, importData] = useLocalStorageSync('clubs', defaultClubs);
 
   const addParticipant = (clubName: string, participant: Participant) => {
     setClubs((prevClubs) =>
@@ -470,6 +472,8 @@ export function ClubsProvider({ children }: { children: ReactNode }) {
     updateSession,
     deleteSession,
     forceReload,
+    exportData,
+    importData,
   };
 
   return <ClubsContext.Provider value={value}>{children}</ClubsContext.Provider>;

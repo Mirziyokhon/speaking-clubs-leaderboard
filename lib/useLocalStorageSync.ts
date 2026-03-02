@@ -22,6 +22,9 @@ export function useLocalStorageSync(key: string, initialValue: Club[]) {
       setStoredValue(valueToStore);
       window.localStorage.setItem(key, JSON.stringify(valueToStore));
       console.log(`Saved ${key} to localStorage:`, valueToStore);
+      
+      // Trigger storage event for cross-tab synchronization
+      window.dispatchEvent(new Event('storage'));
     } catch (error) {
       console.error(`Error saving ${key} to localStorage:`, error);
     }
@@ -39,5 +42,45 @@ export function useLocalStorageSync(key: string, initialValue: Club[]) {
     }
   };
 
-  return [storedValue, setValue, forceReload] as const;
+  const exportData = () => {
+    try {
+      const data = JSON.stringify(storedValue, null, 2);
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `speaking-clubs-data-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      console.log('Data exported successfully');
+    } catch (error) {
+      console.error('Error exporting data:', error);
+    }
+  };
+
+  const importData = (file: File) => {
+    return new Promise<void>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const importedData = JSON.parse(e.target?.result as string);
+          setValue(importedData);
+          console.log('Data imported successfully');
+          resolve();
+        } catch (error) {
+          console.error('Error parsing imported data:', error);
+          reject(error);
+        }
+      };
+      reader.onerror = () => {
+        console.error('Error reading file');
+        reject(new Error('Error reading file'));
+      };
+      reader.readAsText(file);
+    });
+  };
+
+  return [storedValue, setValue, forceReload, exportData, importData] as const;
 }
