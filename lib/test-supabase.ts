@@ -3,6 +3,11 @@ import { supabase } from './supabase';
 // Simple test function to check Supabase connection
 export async function testSupabaseConnection() {
   try {
+    console.log('=== DEBUGGING ENVIRONMENT ===');
+    console.log('NEXT_PUBLIC_SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
+    console.log('NEXT_PUBLIC_SUPABASE_ANON_KEY:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+    console.log('=== END DEBUGGING ===');
+    
     console.log('Testing Supabase connection...');
     console.log('Updated for redeploy - new Supabase variables should be active');
     

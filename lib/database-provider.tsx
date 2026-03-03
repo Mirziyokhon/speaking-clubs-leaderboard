@@ -44,6 +44,12 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
     try {
       setSyncStatus('syncing');
       
+      console.log('=== DATABASE PROVIDER DEBUGGING ===');
+      console.log('Environment variables check:');
+      console.log('NEXT_PUBLIC_SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
+      console.log('NEXT_PUBLIC_SUPABASE_ANON_KEY:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+      console.log('=== END DATABASE DEBUGGING ===');
+      
       // Test Supabase connection first
       const testResult = await testSupabaseConnection();
       console.log('Supabase test result:', testResult);
