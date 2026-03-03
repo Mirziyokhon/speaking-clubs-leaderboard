@@ -1,6 +1,6 @@
 'use client';
 
-import { ClubsProvider, useClubs } from '@/lib/clubContext';
+import { useDatabase } from '@/lib/database-provider';
 import { LeaderboardHeader } from '@/components/leaderboard-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/dialog';
 
 function ScheduleContent() {
-  const { clubs } = useClubs();
+  const { clubs } = useDatabase();
   const [currentMonth, setCurrentMonth] = useState(new Date()); // Current month in Tashkent time (GMT+5)
   const [selectedSession, setSelectedSession] = useState<any>(null);
   const { t } = useTranslation();
@@ -317,9 +317,5 @@ function ScheduleContent() {
 }
 
 export default function SchedulePage() {
-  return (
-    <ClubsProvider>
-      <ScheduleContent />
-    </ClubsProvider>
-  );
+  return <ScheduleContent />;
 }

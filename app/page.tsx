@@ -1,6 +1,6 @@
 'use client';
 
-import { ClubsProvider, useClubs } from '@/lib/clubContext';
+import { useDatabase } from '@/lib/database-provider';
 import { LeaderboardHeader } from '@/components/leaderboard-header';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 
 function LeaderboardContent() {
-  const { clubs } = useClubs();
+  const { clubs } = useDatabase();
   const { t } = useTranslation();
   const [currentMonth, setCurrentMonth] = useState(new Date()); // Current month in Tashkent time (GMT+5)
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
@@ -242,9 +242,5 @@ function LeaderboardContent() {
 }
 
 export default function Home() {
-  return (
-    <ClubsProvider>
-      <LeaderboardContent />
-    </ClubsProvider>
-  );
+  return <LeaderboardContent />;
 }

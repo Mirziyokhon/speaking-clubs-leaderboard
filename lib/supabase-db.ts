@@ -5,85 +5,55 @@ const CLUBS_TABLE = 'clubs';
 const PARTICIPANTS_TABLE = 'participants';
 const SESSIONS_TABLE = 'sessions';
 
-// Initialize Supabase tables if they don't exist
-export async function initializeSupabaseTables() {
-  try {
-    // Create clubs table
-    const { error: clubsError } = await supabase.rpc('create_table_if_not_exists', {
-      table_name: CLUBS_TABLE,
-      definition: `
-        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        name TEXT NOT NULL,
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-      `
-    });
-
-    // Create participants table
-    const { error: participantsError } = await supabase.rpc('create_table_if_not_exists', {
-      table_name: PARTICIPANTS_TABLE,
-      definition: `
-        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        club_id UUID REFERENCES ${CLUBS_TABLE}(id),
-        name TEXT NOT NULL,
-        points INTEGER DEFAULT 0,
-        sessions INTEGER DEFAULT 0,
-        last_session TEXT,
-        badges TEXT[] DEFAULT '{}',
-        monthly_wins INTEGER DEFAULT 0,
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-      `
-    });
-
-    // Create sessions table
-    const { error: sessionsError } = await supabase.rpc('create_table_if_not_exists', {
-      table_name: SESSIONS_TABLE,
-      definition: `
-        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        club_id UUID REFERENCES ${CLUBS_TABLE}(id),
-        title TEXT NOT NULL,
-        topic TEXT,
-        date TEXT NOT NULL,
-        time TEXT NOT NULL,
-        room TEXT NOT NULL,
-        floor INTEGER NOT NULL,
-        duration INTEGER NOT NULL,
-        instructor TEXT NOT NULL,
-        attendees INTEGER DEFAULT 0,
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-      `
-    });
-
-    if (clubsError || participantsError || sessionsError) {
-      console.error('Error initializing tables:', { clubsError, participantsError, sessionsError });
-      throw new Error('Failed to initialize database tables');
-    }
-
-    console.log('Supabase tables initialized successfully');
-    return true;
-  } catch (error) {
-    console.error('Error initializing Supabase:', error);
-    throw error;
-  }
-}
-
 // Clubs operations
 export async function getClubs() {
   try {
-    const { data, error } = await supabase
+    // Get clubs first
+    const { data: clubsData, error: clubsError } = await supabase
       .from(CLUBS_TABLE)
-      .select(`
-        *,
-        participants:${PARTICIPANTS_TABLE}(id, name, points, sessions, last_session, badges, monthly_wins),
-        sessions:${SESSIONS_TABLE}(id, title, topic, date, time, room, floor, duration, instructor, attendees)
-      `)
+      .select('*')
       .order('created_at', { ascending: true });
 
-    if (error) {
-      console.error('Error fetching clubs:', error);
-      throw error;
+    if (clubsError) {
+      console.error('Error fetching clubs:', clubsError);
+      throw clubsError;
     }
 
-    return data || [];
+    // Get participants for each club
+    const clubsWithParticipants = await Promise.all(
+      (clubsData || []).map(async (club) => {
+        const { data: participants, error: participantsError } = await supabase
+          .from(PARTICIPANTS_TABLE)
+          .select('*')
+          .eq('club_id', club.id)
+          .order('created_at', { ascending: true });
+
+        if (participantsError) {
+          console.error('Error fetching participants:', participantsError);
+          return { ...club, participants: [], sessions: [] };
+        }
+
+        // Get sessions for each club
+        const { data: sessions, error: sessionsError } = await supabase
+          .from(SESSIONS_TABLE)
+          .select('*')
+          .eq('club_id', club.id)
+          .order('created_at', { ascending: true });
+
+        if (sessionsError) {
+          console.error('Error fetching sessions:', sessionsError);
+          return { ...club, participants: participants || [], sessions: [] };
+        }
+
+        return {
+          ...club,
+          participants: participants || [],
+          sessions: sessions || []
+        };
+      })
+    );
+
+    return clubsWithParticipants;
   } catch (error) {
     console.error('Error in getClubs:', error);
     throw error;

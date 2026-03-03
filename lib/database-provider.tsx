@@ -10,10 +10,9 @@ import {
   deleteParticipant,
   addSession,
   updateSession,
-  deleteSession,
-  initializeSupabaseTables
+  deleteSession
 } from './supabase-db';
-import { useLocalStorageSync } from './useLocalStorageSync';
+import { testSupabaseConnection } from './test-supabase';
 import { defaultClubs } from './clubContext';
 
 export interface DatabaseContextType {
@@ -34,64 +33,44 @@ const DatabaseContext = createContext<DatabaseContextType | undefined>(undefined
 
 export function DatabaseProvider({ children }: { children: ReactNode }) {
   const [isOnline, setIsOnline] = useState(false);
-  const [syncStatus, setSyncStatus] = useState<'online' | 'offline' | 'syncing'>('offline');
-  
-  // Use localStorage for development, Supabase for production
-  const [localClubs, setLocalClubs, forceReload] = useLocalStorageSync('clubs', defaultClubs);
+  const [syncStatus, setSyncStatus] = useState<'online' | 'offline' | 'syncing'>('syncing');
   const [clubs, setClubs] = useState<Club[]>(defaultClubs);
 
-  // Check if we're in production and have Supabase available
-  const isProduction = process.env.NODE_ENV === 'production';
-  const hasSupabase = typeof window !== 'undefined' && 
-    process.env.NEXT_PUBLIC_SUPABASE_URL && 
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
   useEffect(() => {
-    if (isProduction && hasSupabase) {
-      setIsOnline(true);
-      setSyncStatus('syncing');
-      initializeDatabase();
-    } else {
-      setIsOnline(false);
-      setSyncStatus('offline');
-      // Use localStorage data
-      setClubs(localClubs);
-    }
-  }, [isProduction, hasSupabase]);
+    initializeDatabase();
+  }, []);
 
   const initializeDatabase = async () => {
     try {
-      await initializeSupabaseTables();
+      setSyncStatus('syncing');
+      
+      // Test Supabase connection first
+      const testResult = await testSupabaseConnection();
+      console.log('Supabase test result:', testResult);
+      
+      if (!testResult.success) {
+        throw new Error('Supabase connection failed');
+      }
+      
       const data = await getClubs();
       setClubs(data);
+      setIsOnline(true);
       setSyncStatus('online');
-      console.log('Database initialized and synced with Supabase');
+      console.log('Database connected to Supabase');
     } catch (error) {
-      console.error('Failed to initialize Supabase, falling back to localStorage:', error);
+      console.error('Failed to connect to Supabase:', error);
       setIsOnline(false);
       setSyncStatus('offline');
-      setClubs(localClubs);
+      // Keep default clubs as fallback
+      setClubs(defaultClubs);
     }
   };
 
   const addParticipantAsync = async (clubName: string, participant: Participant) => {
     try {
-      if (isOnline && hasSupabase) {
-        await addParticipant(getClubId(clubName, clubs), participant);
-        await refreshData();
-      } else {
-        // Fallback to localStorage
-        const clubIndex = clubs.findIndex(c => c.name === clubName);
-        if (clubIndex !== -1) {
-          const updatedClubs = [...clubs];
-          updatedClubs[clubIndex] = {
-            ...updatedClubs[clubIndex],
-            participants: [...updatedClubs[clubIndex].participants, participant]
-          };
-          setClubs(updatedClubs);
-          setLocalClubs(updatedClubs);
-        }
-      }
+      const clubId = getClubId(clubName, clubs);
+      await addParticipant(clubId, participant);
+      await refreshData();
     } catch (error) {
       console.error('Error adding participant:', error);
       throw error;
@@ -100,24 +79,9 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
 
   const updateParticipantAsync = async (clubName: string, id: string, participant: Participant) => {
     try {
-      if (isOnline && hasSupabase) {
-        await updateParticipant(getClubId(clubName, clubs), id, participant);
-        await refreshData();
-      } else {
-        // Fallback to localStorage
-        const clubIndex = clubs.findIndex(c => c.name === clubName);
-        if (clubIndex !== -1) {
-          const updatedClubs = [...clubs];
-          updatedClubs[clubIndex] = {
-            ...updatedClubs[clubIndex],
-            participants: updatedClubs[clubIndex].participants.map(p => 
-              p.id === id ? participant : p
-            )
-          };
-          setClubs(updatedClubs);
-          setLocalClubs(updatedClubs);
-        }
-      }
+      const clubId = getClubId(clubName, clubs);
+      await updateParticipant(clubId, id, participant);
+      await refreshData();
     } catch (error) {
       console.error('Error updating participant:', error);
       throw error;
@@ -126,22 +90,9 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
 
   const deleteParticipantAsync = async (clubName: string, id: string) => {
     try {
-      if (isOnline && hasSupabase) {
-        await deleteParticipant(getClubId(clubName, clubs), id);
-        await refreshData();
-      } else {
-        // Fallback to localStorage
-        const clubIndex = clubs.findIndex(c => c.name === clubName);
-        if (clubIndex !== -1) {
-          const updatedClubs = [...clubs];
-          updatedClubs[clubIndex] = {
-            ...updatedClubs[clubIndex],
-            participants: updatedClubs[clubIndex].participants.filter(p => p.id !== id)
-          };
-          setClubs(updatedClubs);
-          setLocalClubs(updatedClubs);
-        }
-      }
+      const clubId = getClubId(clubName, clubs);
+      await deleteParticipant(clubId, id);
+      await refreshData();
     } catch (error) {
       console.error('Error deleting participant:', error);
       throw error;
@@ -150,22 +101,9 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
 
   const addSessionAsync = async (clubName: string, session: Session) => {
     try {
-      if (isOnline && hasSupabase) {
-        await addSession(getClubId(clubName, clubs), session);
-        await refreshData();
-      } else {
-        // Fallback to localStorage
-        const clubIndex = clubs.findIndex(c => c.name === clubName);
-        if (clubIndex !== -1) {
-          const updatedClubs = [...clubs];
-          updatedClubs[clubIndex] = {
-            ...updatedClubs[clubIndex],
-            sessions: [...updatedClubs[clubIndex].sessions, session]
-          };
-          setClubs(updatedClubs);
-          setLocalClubs(updatedClubs);
-        }
-      }
+      const clubId = getClubId(clubName, clubs);
+      await addSession(clubId, session);
+      await refreshData();
     } catch (error) {
       console.error('Error adding session:', error);
       throw error;
@@ -174,24 +112,9 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
 
   const updateSessionAsync = async (clubName: string, id: string, session: Session) => {
     try {
-      if (isOnline && hasSupabase) {
-        await updateSession(getClubId(clubName, clubs), id, session);
-        await refreshData();
-      } else {
-        // Fallback to localStorage
-        const clubIndex = clubs.findIndex(c => c.name === clubName);
-        if (clubIndex !== -1) {
-          const updatedClubs = [...clubs];
-          updatedClubs[clubIndex] = {
-            ...updatedClubs[clubIndex],
-            sessions: updatedClubs[clubIndex].sessions.map(s => 
-              s.id === id ? session : s
-            )
-          };
-          setClubs(updatedClubs);
-          setLocalClubs(updatedClubs);
-        }
-      }
+      const clubId = getClubId(clubName, clubs);
+      await updateSession(clubId, id, session);
+      await refreshData();
     } catch (error) {
       console.error('Error updating session:', error);
       throw error;
@@ -200,22 +123,9 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
 
   const deleteSessionAsync = async (clubName: string, id: string) => {
     try {
-      if (isOnline && hasSupabase) {
-        await deleteSession(getClubId(clubName, clubs), id);
-        await refreshData();
-      } else {
-        // Fallback to localStorage
-        const clubIndex = clubs.findIndex(c => c.name === clubName);
-        if (clubIndex !== -1) {
-          const updatedClubs = [...clubs];
-          updatedClubs[clubIndex] = {
-            ...updatedClubs[clubIndex],
-            sessions: updatedClubs[clubIndex].sessions.filter(s => s.id !== id)
-          };
-          setClubs(updatedClubs);
-          setLocalClubs(updatedClubs);
-        }
-      }
+      const clubId = getClubId(clubName, clubs);
+      await deleteSession(clubId, id);
+      await refreshData();
     } catch (error) {
       console.error('Error deleting session:', error);
       throw error;
@@ -223,14 +133,12 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
   };
 
   const refreshData = async () => {
-    if (isOnline && hasSupabase) {
-      try {
-        const data = await getClubs();
-        setClubs(data);
-        console.log('Data refreshed from Supabase');
-      } catch (error) {
-        console.error('Error refreshing data:', error);
-      }
+    try {
+      const data = await getClubs();
+      setClubs(data);
+      console.log('Data refreshed from Supabase');
+    } catch (error) {
+      console.error('Error refreshing data:', error);
     }
   };
 
@@ -253,7 +161,7 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
     addSession: addSessionAsync,
     updateSession: updateSessionAsync,
     deleteSession: deleteSessionAsync,
-    forceReload,
+    forceReload: refreshData,
     isOnline,
     syncStatus,
   };

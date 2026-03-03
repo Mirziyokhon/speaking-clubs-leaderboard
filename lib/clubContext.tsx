@@ -35,6 +35,7 @@ export interface MonthlyWinner {
 }
 
 export interface Club {
+  id: string;
   name: string;
   participants: Participant[];
   sessions: Session[];
@@ -57,6 +58,7 @@ export interface ClubsContextType {
 
 const defaultClubs: Club[] = [
   {
+    id: 'default-english',
     name: 'English',
     participants: [
       {
