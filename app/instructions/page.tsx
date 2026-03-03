@@ -208,51 +208,6 @@ function InstructionsContent() {
             </CardContent>
           </Card>
         </div>
-
-        {/* Badges Section */}
-        <div className="mb-32 fade-in">
-          <div className="mb-8">
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-2 text-balance">
-              Special Achievement Badges
-            </h2>
-            <p className="text-slate-600 text-lg">
-              Members can earn special badges according to the frequency and quality of their participation in clubs
-            </p>
-          </div>
-
-          <Card className="border-purple-200 shadow-lg bg-gradient-to-br from-purple-50 to-pink-50">
-            <CardHeader className="border-b border-purple-200">
-              <CardTitle className="flex items-center gap-2 text-purple-900">
-                <Gift className="w-6 h-6" />
-                Achievement Badges
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-8">
-              <div className="space-y-6">
-                {/* Consistency Hero Badge */}
-                <div className="flex items-start gap-4">
-                  <div className="bg-gradient-to-br from-purple-300 to-pink-400 rounded-full p-3 flex-shrink-0">
-                    <span className="text-2xl">🏆</span>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-slate-900 text-lg">
-                        Consistency Hero
-                      </h3>
-                      <Badge className="bg-purple-500 hover:bg-purple-600">Most Honorable</Badge>
-                    </div>
-                    <p className="text-slate-600 mb-2">
-                      <strong>Prize:</strong> Shortlist into TechJobs candidates that will help you start your career in IT
-                    </p>
-                    <p className="text-sm text-slate-500">
-                      Awarded for 100% participation over a long time period and consistent quality in club activities
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </main>
     </div>
   );

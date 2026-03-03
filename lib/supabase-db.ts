@@ -8,6 +8,10 @@ const SESSIONS_TABLE = 'sessions';
 // Clubs operations
 export async function getClubs() {
   try {
+    if (!supabase) {
+      throw new Error('Supabase client not initialized');
+    }
+    
     // Get clubs first
     const { data: clubsData, error: clubsError } = await supabase
       .from(CLUBS_TABLE)
@@ -62,6 +66,10 @@ export async function getClubs() {
 
 export async function updateClub(clubId: string, clubData: any) {
   try {
+    if (!supabase) {
+      throw new Error('Supabase client not initialized');
+    }
+    
     const { error } = await supabase
       .from(CLUBS_TABLE)
       .update(clubData)
@@ -81,6 +89,10 @@ export async function updateClub(clubId: string, clubData: any) {
 
 export async function addParticipant(clubId: string, participant: any) {
   try {
+    if (!supabase) {
+      throw new Error('Supabase client not initialized');
+    }
+    
     const { error } = await supabase
       .from(PARTICIPANTS_TABLE)
       .insert({ ...participant, club_id: clubId });
@@ -99,6 +111,10 @@ export async function addParticipant(clubId: string, participant: any) {
 
 export async function updateParticipant(clubId: string, participantId: string, participant: any) {
   try {
+    if (!supabase) {
+      throw new Error('Supabase client not initialized');
+    }
+    
     const { error } = await supabase
       .from(PARTICIPANTS_TABLE)
       .update(participant)
@@ -119,6 +135,10 @@ export async function updateParticipant(clubId: string, participantId: string, p
 
 export async function deleteParticipant(clubId: string, participantId: string) {
   try {
+    if (!supabase) {
+      throw new Error('Supabase client not initialized');
+    }
+    
     const { error } = await supabase
       .from(PARTICIPANTS_TABLE)
       .delete()
@@ -139,6 +159,10 @@ export async function deleteParticipant(clubId: string, participantId: string) {
 
 export async function addSession(clubId: string, session: any) {
   try {
+    if (!supabase) {
+      throw new Error('Supabase client not initialized');
+    }
+    
     const { error } = await supabase
       .from(SESSIONS_TABLE)
       .insert({ ...session, club_id: clubId });
@@ -157,6 +181,10 @@ export async function addSession(clubId: string, session: any) {
 
 export async function updateSession(clubId: string, sessionId: string, session: any) {
   try {
+    if (!supabase) {
+      throw new Error('Supabase client not initialized');
+    }
+    
     const { error } = await supabase
       .from(SESSIONS_TABLE)
       .update(session)
@@ -177,6 +205,10 @@ export async function updateSession(clubId: string, sessionId: string, session: 
 
 export async function deleteSession(clubId: string, sessionId: string) {
   try {
+    if (!supabase) {
+      throw new Error('Supabase client not initialized');
+    }
+    
     const { error } = await supabase
       .from(SESSIONS_TABLE)
       .delete()
