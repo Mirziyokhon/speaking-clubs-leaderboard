@@ -1,3 +1,5 @@
+'use client';
+
 import { Redis } from '@upstash/redis';
 import { Club, Participant, Session } from '@/lib/clubContext';
 import { defaultClubs } from '@/lib/clubContext';
