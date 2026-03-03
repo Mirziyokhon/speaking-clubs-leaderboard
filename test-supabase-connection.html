@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supabase Connection Test</title>
+</head>
+<body>
+    <h1>Supabase Connection Test</h1>
+    <p>Testing direct connection to your Supabase project...</p>
+    
+    <script>
+        const SUPABASE_URL = 'https://vgqrradegdksiupugoxl.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZncXJyYWRlZ2Rrc2l1cHVnb3hsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MTYyMDcsImV4cCI6MjA4ODA5MjIwN30.jyOEtJJ9md-Pskx2fyHw5nuNc854YHCgvVuJfUJk5kM';
+        
+        console.log('Testing Supabase connection...');
+        console.log('URL:', SUPABASE_URL);
+        console.log('Key:', SUPABASE_ANON_KEY ? 'SET' : 'NOT SET');
+        
+        // Test fetch to Supabase REST API
+        fetch(`${SUPABASE_URL}/rest/v1/clubs?select=id,name&limit=1`, {
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Response:', data);
+            if (data.error) {
+                document.body.innerHTML = `<h2 style="color: red;">ERROR: ${data.error.message}</h2>`;
+            } else {
+                document.body.innerHTML = `<h2 style="color: green;">SUCCESS: Connected to Supabase!</h2><p>Found ${data.length} clubs</p>`;
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            document.body.innerHTML = `<h2 style="color: red;">NETWORK ERROR: ${error.message}</h2>`;
+        });
+    </script>
+</body>
+</html>
