@@ -4,6 +4,7 @@ import { supabase } from './supabase';
 export async function testSupabaseConnection() {
   try {
     console.log('Testing Supabase connection...');
+    console.log('Updated for redeploy - new Supabase variables should be active');
     
     // Test basic connection
     const { data, error } = await supabase
