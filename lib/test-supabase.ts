@@ -11,15 +11,14 @@ export async function testSupabaseConnection() {
     console.log('Testing Supabase connection...');
     console.log('Updated for redeploy - new Supabase variables should be active');
     
-    // Get the client first
-    const client = supabase();
-    if (!client) {
-      console.log('Supabase client not available (server-side)');
+    // Check if supabase client is available
+    if (!supabase) {
+      console.log('Supabase client not available');
       return { success: false, error: 'Client not available' };
     }
     
     // Test basic connection
-    const { data, error } = await client
+    const { data, error } = await supabase
       .from('clubs')
       .select('id, name')
       .limit(1);
