@@ -479,6 +479,8 @@ export function ClubsProvider({ children }: { children: ReactNode }) {
   return <ClubsContext.Provider value={value}>{children}</ClubsContext.Provider>;
 }
 
+export { defaultClubs };
+
 export function useClubs() {
   const context = useContext(ClubsContext);
   if (!context) {
