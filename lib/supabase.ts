@@ -1,7 +1,14 @@
-// Environment variables for future Supabase integration
-export const supabaseEnv = {
-  url: process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ukzcklttwsohsglyfqyu.supabase.co',
-  anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiIiwicm9sZSI6ImV4cCI6IjE3NzI4ODAwODc4OX0.Y87D8jbachN18-RneNtZJSJ4jYE_bMooZ5ZqGuvQlaw'
-};
+import { createClient } from '@supabase/supabase-js'
 
-export { supabaseEnv };
+// Use environment variables from Vercel in production
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.warn('Supabase environment variables not found. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel.');
+  throw new Error('Supabase configuration missing');
+}
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+export { supabase };

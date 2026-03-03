@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ClubsProvider, useClubs } from '@/lib/clubContext';
+import { DatabaseProvider, useDatabase } from '@/lib/database-provider';
 import { AdminHeader } from '@/components/admin-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Plus, Edit2, Trash2, Download, Upload } from 'lucide-react';
+import { Plus, Edit2, Trash2 } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,7 +27,7 @@ import { useToast } from '@/hooks/use-toast';
 
 function DashboardContent() {
   const router = useRouter();
-  const { clubs, deleteParticipant, exportData, importData } = useClubs();
+  const { clubs, deleteParticipant, forceReload, isOnline, syncStatus } = useDatabase();
   const { toast } = useToast();
   const [selectedClub, setSelectedClub] = useState('English');
   const [deleteConfirm, setDeleteConfirm] = useState<{
@@ -35,41 +35,8 @@ function DashboardContent() {
     participantId: string;
     name: string;
   } | null>(null);
-  const [isImporting, setIsImporting] = useState(false);
 
   const currentClub = clubs.find((c) => c.name === selectedClub);
-
-  const handleExport = () => {
-    exportData();
-    toast({
-      title: 'Success',
-      description: 'Data exported successfully! Check your downloads folder.',
-    });
-  };
-
-  const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    setIsImporting(true);
-    try {
-      await importData(file);
-      toast({
-        title: 'Success',
-        description: 'Data imported successfully! All changes have been applied.',
-      });
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to import data. Please check the file format.',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsImporting(false);
-      // Reset the file input
-      event.target.value = '';
-    }
-  };
 
   const handleDelete = () => {
     if (deleteConfirm) {
@@ -85,6 +52,34 @@ function DashboardContent() {
   return (
     <div className="min-h-screen bg-slate-50">
       <AdminHeader />
+
+      {/* Sync Status */}
+      <div className="max-w-6xl mx-auto px-4 py-4">
+        <div className="mb-4 p-4 rounded-lg border bg-white shadow-sm">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className={`w-3 h-3 rounded-full ${
+                syncStatus === 'online' ? 'bg-green-500' : 
+                syncStatus === 'syncing' ? 'bg-yellow-500' : 'bg-red-500'
+              }`} />
+              <span className="text-sm font-medium">
+                {syncStatus === 'online' ? '🟢 Connected to Database' : 
+                 syncStatus === 'syncing' ? '🟡 Syncing...' : '🔴 Offline Mode'}
+              </span>
+            </div>
+            {isOnline && (
+              <span className="text-xs text-slate-500">
+                All changes are saved automatically
+              </span>
+            )}
+            {!isOnline && (
+              <span className="text-xs text-orange-600">
+                Changes are saved locally only
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
 
       <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="space-y-6">
@@ -113,41 +108,13 @@ function DashboardContent() {
           <Card>
             <CardHeader className="flex items-center justify-between flex-col sm:flex-row gap-4">
               <CardTitle className="text-lg sm:text-2xl">{selectedClub} Club - Participants</CardTitle>
-              <div className="flex gap-2 w-full sm:w-auto">
-                <Button
-                  onClick={handleExport}
-                  className="gap-2 bg-blue-600 hover:bg-blue-700 flex-1 sm:flex-initial"
-                >
-                  <Download className="w-4 h-4" />
-                  <span className="hidden sm:inline">Export</span>
-                  <span className="sm:hidden">📥</span>
-                </Button>
-                <div className="relative">
-                  <input
-                    type="file"
-                    accept=".json"
-                    onChange={handleImport}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                    disabled={isImporting}
-                  />
-                  <Button
-                    className="gap-2 bg-purple-600 hover:bg-purple-700 flex-1 sm:flex-initial"
-                    disabled={isImporting}
-                  >
-                    <Upload className="w-4 h-4" />
-                    <span className="hidden sm:inline">{isImporting ? 'Importing...' : 'Import'}</span>
-                    <span className="sm:hidden">{isImporting ? '⏳' : '📤'}</span>
-                  </Button>
-                </div>
-                <Button
-                  onClick={() => router.push('/admin/add')}
-                  className="gap-2 bg-green-600 hover:bg-green-700 flex-1 sm:flex-initial"
-                >
-                  <Plus className="w-4 h-4" />
-                  <span className="hidden sm:inline">Add</span>
-                  <span className="sm:hidden">➕</span>
-                </Button>
-              </div>
+              <Button
+                onClick={() => router.push('/admin/add')}
+                className="gap-2 bg-green-600 hover:bg-green-700 w-full sm:w-auto"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Add Participant</span>
+              </Button>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">
@@ -286,8 +253,8 @@ export default function Dashboard() {
   }
 
   return (
-    <ClubsProvider>
+    <DatabaseProvider>
       <DashboardContent />
-    </ClubsProvider>
+    </DatabaseProvider>
   );
 }
