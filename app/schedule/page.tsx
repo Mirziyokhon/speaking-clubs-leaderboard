@@ -1,6 +1,6 @@
 'use client';
 
-import { useDatabase } from '@/lib/database-provider';
+import { useDatabase } from '@/lib/redis-db-provider';
 import { LeaderboardHeader } from '@/components/leaderboard-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

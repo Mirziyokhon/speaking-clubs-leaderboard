@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { DatabaseProvider, useDatabase } from '@/lib/database-provider';
+import { useDatabase } from '@/lib/redis-db-provider';
 import { AdminHeader } from '@/components/admin-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -27,7 +27,7 @@ import { useToast } from '@/hooks/use-toast';
 
 function DashboardContent() {
   const router = useRouter();
-  const { clubs, deleteParticipant, forceReload, isOnline, syncStatus } = useDatabase();
+  const { clubs, deleteParticipant, isOnline, syncStatus } = useDatabase();
   const { toast } = useToast();
   const [selectedClub, setSelectedClub] = useState('English');
   const [deleteConfirm, setDeleteConfirm] = useState<{
@@ -253,8 +253,6 @@ export default function Dashboard() {
   }
 
   return (
-    <DatabaseProvider>
-      <DashboardContent />
-    </DatabaseProvider>
+    <DashboardContent />
   );
 }
