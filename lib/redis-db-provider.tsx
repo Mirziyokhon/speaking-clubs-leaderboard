@@ -31,6 +31,7 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
   const [clubs, setClubs] = useState<Club[]>(defaultClubs);
   const [isOnline, setIsOnline] = useState(false);
   const [syncStatus, setSyncStatus] = useState<'online' | 'offline' | 'syncing'>('offline');
+  const [isInitialized, setIsInitialized] = useState(false); // Add loading guard
 
   // Initialize database
   useEffect(() => {
@@ -47,6 +48,7 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
         setClubs(defaultClubs);
         setIsOnline(false);
         setSyncStatus('offline');
+        setIsInitialized(true);
         return;
       }
       
@@ -55,11 +57,13 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
       setClubs(data);
       setIsOnline(true);
       setSyncStatus('online');
+      setIsInitialized(true); // Mark as fully loaded
       console.log('Database connected via API');
     } catch (error) {
       console.error('Failed to connect to API:', error);
       setIsOnline(false);
       setSyncStatus('offline');
+      setIsInitialized(true); // Mark as loaded even on error
       // Keep default clubs as fallback
       setClubs(defaultClubs);
     }
@@ -120,6 +124,8 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
   };
 
   const addParticipant = async (clubId: string, participant: Participant) => {
+    if (!isInitialized) return; // Don't save until data is loaded
+    
     const updatedClubs = clubs.map(club => {
       if (club.id === clubId) {
         return {
@@ -135,6 +141,7 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
   };
 
   const updateParticipant = async (clubId: string, participantId: string, participant: Participant) => {
+    if (!isInitialized) return; // Don't save until data is loaded
     const updatedClubs = clubs.map(club => {
       if (club.id === clubId) {
         return {
@@ -152,6 +159,7 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
   };
 
   const deleteParticipant = async (clubId: string, participantId: string) => {
+    if (!isInitialized) return; // Don't save until data is loaded
     const updatedClubs = clubs.map(club => {
       if (club.id === clubId) {
         return {
@@ -167,6 +175,7 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
   };
 
   const addSession = async (clubId: string, session: Session) => {
+    if (!isInitialized) return; // Don't save until data is loaded
     const updatedClubs = clubs.map(club => {
       if (club.id === clubId) {
         return {
@@ -182,6 +191,7 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
   };
 
   const updateSession = async (clubId: string, sessionId: string, session: Session) => {
+    if (!isInitialized) return; // Don't save until data is loaded
     const updatedClubs = clubs.map(club => {
       if (club.id === clubId) {
         return {
@@ -199,6 +209,7 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
   };
 
   const deleteSession = async (clubId: string, sessionId: string) => {
+    if (!isInitialized) return; // Don't save until data is loaded
     const updatedClubs = clubs.map(club => {
       if (club.id === clubId) {
         return {
