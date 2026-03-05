@@ -10,14 +10,6 @@ const redis = new Redis({
 export async function GET() {
   try {
     const clubsData = await redis.get('clubs');
-    
-    // ONE-TIME CLEAR: Remove all existing data
-    if (clubsData) {
-      console.log('Clearing existing data from Redis...');
-      await redis.del('clubs');
-      return NextResponse.json({ success: true, data: null, cleared: true });
-    }
-    
     return NextResponse.json({ success: true, data: clubsData });
   } catch (error) {
     console.error('Error fetching clubs:', error);

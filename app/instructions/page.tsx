@@ -1,6 +1,6 @@
 'use client';
 
-import { ClubsProvider } from '@/lib/clubContext';
+import { DatabaseProvider } from '@/lib/redis-db-provider';
 import { LeaderboardHeader } from '@/components/leaderboard-header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -215,8 +215,8 @@ function InstructionsContent() {
 
 export default function InstructionsPage() {
   return (
-    <ClubsProvider>
+    <DatabaseProvider>
       <InstructionsContent />
-    </ClubsProvider>
+    </DatabaseProvider>
   );
 }
