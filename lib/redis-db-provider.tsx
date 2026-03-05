@@ -5,12 +5,14 @@ import { Club, Participant, Session } from '@/lib/clubContext';
 import { defaultClubs } from '@/lib/clubContext';
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 
-// Initialize Upstash Redis - Use REST API variables (not direct Redis URL)
+// Initialize Upstash Redis - Try KV_ variables first (more reliable)
 console.log('Environment variables:', {
-  url: process.env.REDIS_KV_REST_API_URL,
-  token: process.env.REDIS_KV_REST_API_TOKEN ? 'exists' : 'missing',
+  url: process.env.KV_REST_API_URL,
+  token: process.env.KV_REST_API_TOKEN ? 'exists' : 'missing',
   // Show all Redis variables for debugging
   allRedisVars: {
+    KV_REST_API_URL: process.env.KV_REST_API_URL,
+    KV_REST_API_TOKEN: process.env.KV_REST_API_TOKEN ? 'exists' : 'missing',
     REDIS_KV_REST_API_URL: process.env.REDIS_KV_REST_API_URL,
     REDIS_KV_REST_API_TOKEN: process.env.REDIS_KV_REST_API_TOKEN ? 'exists' : 'missing',
     REDIS_KV_URL: process.env.REDIS_KV_URL,
@@ -19,8 +21,8 @@ console.log('Environment variables:', {
 });
 
 const redis = new Redis({
-  url: process.env.REDIS_KV_REST_API_URL!,
-  token: process.env.REDIS_KV_REST_API_TOKEN!,
+  url: process.env.KV_REST_API_URL!,
+  token: process.env.KV_REST_API_TOKEN!,
 });
 
 type DatabaseContextType = {
