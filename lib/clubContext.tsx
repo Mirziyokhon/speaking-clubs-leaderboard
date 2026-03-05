@@ -1,7 +1,6 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useLocalStorageSync } from './useLocalStorageSync';
 
 export interface Participant {
   id: string;
@@ -90,7 +89,10 @@ const defaultClubs: Club[] = [
 const ClubsContext = createContext<ClubsContextType | undefined>(undefined);
 
 export function ClubsProvider({ children }: { children: ReactNode }) {
-  const [clubs, setClubs, forceReload, exportData, importData] = useLocalStorageSync('clubs', defaultClubs);
+  const [clubs, setClubs] = useState<Club[]>(defaultClubs);
+  const [forceReload] = useState(() => () => {});
+  const exportData = () => {};
+  const importData = () => Promise.resolve();
 
   const addParticipant = (clubName: string, participant: Participant) => {
     setClubs((prevClubs) =>

@@ -26,7 +26,6 @@ import {
 } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
-import { debugLocalStorage } from '@/lib/debug-storage';
 
 function SessionsContent() {
   const router = useRouter();
@@ -142,13 +141,11 @@ function SessionsContent() {
                 <Plus className="w-4 h-4" />
                 <span>Add Session</span>
               </Button>
-              <Button
-                onClick={debugLocalStorage}
-                variant="outline"
-                className="gap-2"
-              >
-                Debug Storage
-              </Button>
+              <Link href="/admin/dashboard">
+                <Button variant="outline" className="gap-2">
+                  Back to Dashboard
+                </Button>
+              </Link>
               <Button
                 onClick={forceReload}
                 variant="outline"
