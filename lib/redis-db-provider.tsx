@@ -7,8 +7,8 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 
 // Initialize Upstash Redis
 const redis = new Redis({
-  url: process.env.KV_REST_API_URL!,
-  token: process.env.KV_REST_API_TOKEN!,
+  url: process.env.REDIS_KV_REST_API_URL!,
+  token: process.env.REDIS_KV_REST_API_TOKEN!,
 });
 
 type DatabaseContextType = {
