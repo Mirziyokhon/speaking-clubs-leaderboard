@@ -17,6 +17,16 @@ export async function GET() {
   }
 }
 
+export async function DELETE() {
+  try {
+    await redis.del('clubs');
+    return NextResponse.json({ success: true, message: 'All data cleared from Redis' });
+  } catch (error) {
+    console.error('Error clearing clubs:', error);
+    return NextResponse.json({ success: false, error: 'Failed to clear clubs' }, { status: 500 });
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const clubs = await request.json();

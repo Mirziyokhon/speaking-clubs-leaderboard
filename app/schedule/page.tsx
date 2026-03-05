@@ -139,11 +139,11 @@ function ScheduleContent() {
 
           <CardContent className="p-6">
             {/* Day Headers */}
-            <div className="grid grid-cols-7 gap-2 mb-4">
+            <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-4">
               {dayNames.map((day) => (
                 <div
                   key={day}
-                  className="text-center font-semibold text-slate-700 py-2 bg-slate-100 rounded"
+                  className="text-center font-semibold text-slate-700 py-1 sm:py-2 bg-slate-100 rounded text-xs sm:text-sm"
                 >
                   {day}
                 </div>
@@ -151,7 +151,7 @@ function ScheduleContent() {
             </div>
 
             {/* Calendar Grid */}
-            <div className="grid grid-cols-7 gap-2">
+            <div className="grid grid-cols-7 gap-1 sm:gap-2">
               {/* Empty cells for days before month starts */}
               {Array.from({ length: firstDay }).map((_, i) => (
                 <div key={`empty-${i}`} className="aspect-square" />
@@ -163,13 +163,13 @@ function ScheduleContent() {
                 return (
                   <div
                     key={day}
-                    className="aspect-square border-2 border-slate-200 rounded-lg p-2 bg-white hover:border-blue-400 transition-colors overflow-hidden"
+                    className="aspect-square border border-slate-200 rounded p-1 sm:p-2 bg-white hover:border-blue-400 transition-colors overflow-hidden"
                   >
                     <div className="h-full flex flex-col">
-                      <p className="font-bold text-slate-900 text-sm mb-1">{day}</p>
+                      <p className="font-bold text-slate-900 text-xs sm:text-sm mb-1">{day}</p>
                       <div className="flex-1 overflow-y-auto space-y-1">
                         {daysSessions.length > 0 ? (
-                          daysSessions.map((session) => (
+                          daysSessions.slice(0, 2).map((session) => (
                             <div
                               key={session.id}
                               className={`text-xs p-1 rounded border ${getClubColor(
@@ -179,11 +179,12 @@ function ScheduleContent() {
                               onClick={() => setSelectedSession(session)}
                             >
                               <p className="font-semibold truncate">{session.time}</p>
-                              <p className="truncate">{session.title}</p>
+                              <p className="truncate hidden sm:block">{session.title}</p>
+                              <p className="truncate sm:hidden">{session.title.slice(0, 8)}...</p>
                             </div>
                           ))
                         ) : (
-                          <p className="text-xs text-slate-400 italic">{t('schedule.noSessions')}</p>
+                          <p className="text-xs text-slate-400 italic hidden sm:block">{t('schedule.noSessions')}</p>
                         )}
                       </div>
                     </div>

@@ -30,9 +30,10 @@ export function LeaderboardHeader() {
                   pathname === '/'
                     ? 'bg-white text-blue-600 hover:bg-blue-50'
                     : 'text-white hover:bg-blue-500'
-                } text-xs sm:text-sm hidden sm:inline-flex`}
+                } text-xs sm:text-sm`}
               >
-                {t('navigation.leaderboard')}
+                <Trophy className="w-4 h-4 sm:hidden" />
+                <span className="hidden sm:inline">{t('navigation.leaderboard')}</span>
               </Button>
             </Link>
             <Link href="/schedule">
