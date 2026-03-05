@@ -6,6 +6,11 @@ import { defaultClubs } from '@/lib/clubContext';
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 
 // Initialize Upstash Redis
+console.log('Environment variables:', {
+  url: process.env.REDIS_KV_REST_API_URL,
+  token: process.env.REDIS_KV_REST_API_TOKEN ? 'exists' : 'missing'
+});
+
 const redis = new Redis({
   url: process.env.REDIS_KV_REST_API_URL!,
   token: process.env.REDIS_KV_REST_API_TOKEN!,
