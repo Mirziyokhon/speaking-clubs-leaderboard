@@ -5,10 +5,17 @@ import { Club, Participant, Session } from '@/lib/clubContext';
 import { defaultClubs } from '@/lib/clubContext';
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 
-// Initialize Upstash Redis
+// Initialize Upstash Redis - Use REST API variables (not direct Redis URL)
 console.log('Environment variables:', {
   url: process.env.REDIS_KV_REST_API_URL,
-  token: process.env.REDIS_KV_REST_API_TOKEN ? 'exists' : 'missing'
+  token: process.env.REDIS_KV_REST_API_TOKEN ? 'exists' : 'missing',
+  // Show all Redis variables for debugging
+  allRedisVars: {
+    REDIS_KV_REST_API_URL: process.env.REDIS_KV_REST_API_URL,
+    REDIS_KV_REST_API_TOKEN: process.env.REDIS_KV_REST_API_TOKEN ? 'exists' : 'missing',
+    REDIS_KV_URL: process.env.REDIS_KV_URL,
+    REDIS_URL: process.env.REDIS_URL,
+  }
 });
 
 const redis = new Redis({
