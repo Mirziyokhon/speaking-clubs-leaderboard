@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { ClubsProvider, useClubs } from '@/lib/clubContext';
+import { DatabaseProvider, useDatabase } from '@/lib/redis-db-provider';
 import { AdminHeader } from '@/components/admin-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next';
 function EditSessionContent() {
   const router = useRouter();
   const params = useParams();
-  const { clubs, updateSession } = useClubs();
+  const { clubs, updateSession } = useDatabase();
   const { toast } = useToast();
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
@@ -287,12 +287,12 @@ function EditSessionContent() {
   );
 }
 
-export default function EditSessionPage() {
+export default function EditSession() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  const checkAuth = () => {
+  useEffect(() => {
     const authenticated = localStorage.getItem('adminAuthenticated');
     if (authenticated === 'true') {
       setIsAuthenticated(true);
@@ -300,11 +300,9 @@ export default function EditSessionPage() {
       router.push('/admin');
     }
     setIsLoading(false);
-  };
+  }, [router]);
 
-  // Check authentication on mount
   if (isLoading) {
-    setTimeout(checkAuth, 100);
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
 
@@ -313,8 +311,6 @@ export default function EditSessionPage() {
   }
 
   return (
-    <ClubsProvider>
-      <EditSessionContent />
-    </ClubsProvider>
+    <EditSessionContent />
   );
 }

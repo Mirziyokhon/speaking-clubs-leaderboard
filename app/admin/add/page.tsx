@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ClubsProvider, useClubs } from '@/lib/clubContext';
+import { DatabaseProvider, useDatabase } from '@/lib/redis-db-provider';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -19,7 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 
 function AddParticipantContent() {
   const router = useRouter();
-  const { clubs, addParticipant } = useClubs();
+  const { clubs, addParticipant } = useDatabase();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -227,8 +227,6 @@ export default function AddParticipant() {
   }
 
   return (
-    <ClubsProvider>
-      <AddParticipantContent />
-    </ClubsProvider>
+    <AddParticipantContent />
   );
 }

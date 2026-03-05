@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { ClubsProvider, useClubs } from '@/lib/clubContext';
+import { DatabaseProvider, useDatabase } from '@/lib/redis-db-provider';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -21,7 +21,7 @@ function EditParticipantContent() {
   const router = useRouter();
   const params = useParams();
   const participantId = params.id as string;
-  const { clubs, updateParticipant, getParticipant } = useClubs();
+  const { clubs, updateParticipant } = useDatabase();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -265,8 +265,6 @@ export default function EditParticipant() {
   }
 
   return (
-    <ClubsProvider>
-      <EditParticipantContent />
-    </ClubsProvider>
+    <EditParticipantContent />
   );
 }

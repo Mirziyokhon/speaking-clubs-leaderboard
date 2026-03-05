@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ClubsProvider, useClubs } from '@/lib/clubContext';
+import Link from 'next/link';
+import { DatabaseProvider, useDatabase } from '@/lib/redis-db-provider';
 import { AdminHeader } from '@/components/admin-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -29,7 +30,7 @@ import { useTranslation } from 'react-i18next';
 
 function SessionsContent() {
   const router = useRouter();
-  const { clubs, deleteSession, forceReload } = useClubs();
+  const { clubs, deleteSession } = useDatabase();
   const { toast } = useToast();
   const { t } = useTranslation();
   const [selectedClub, setSelectedClub] = useState('English');
@@ -146,13 +147,6 @@ function SessionsContent() {
                   Back to Dashboard
                 </Button>
               </Link>
-              <Button
-                onClick={forceReload}
-                variant="outline"
-                className="gap-2"
-              >
-                Refresh
-              </Button>
             </div>
           </div>
 
@@ -409,8 +403,8 @@ export default function SessionsPage() {
   }
 
   return (
-    <ClubsProvider key={refreshKey}>
+    <DatabaseProvider>
       <SessionsContent />
-    </ClubsProvider>
+    </DatabaseProvider>
   );
 }

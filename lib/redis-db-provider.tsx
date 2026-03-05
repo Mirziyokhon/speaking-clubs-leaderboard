@@ -127,7 +127,8 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
     if (!isInitialized) return; // Don't save until data is loaded
     
     const updatedClubs = clubs.map(club => {
-      if (club.id === clubId) {
+      // Handle both club name (e.g., 'English') and club id (e.g., 'default-english')
+      if (club.id === clubId || club.name === clubId) {
         return {
           ...club,
           participants: [...club.participants, participant]
@@ -143,7 +144,8 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
   const updateParticipant = async (clubId: string, participantId: string, participant: Participant) => {
     if (!isInitialized) return; // Don't save until data is loaded
     const updatedClubs = clubs.map(club => {
-      if (club.id === clubId) {
+      // Handle both club name (e.g., 'English') and club id (e.g., 'default-english')
+      if (club.id === clubId || club.name === clubId) {
         return {
           ...club,
           participants: club.participants.map(p => 
@@ -161,7 +163,8 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
   const deleteParticipant = async (clubId: string, participantId: string) => {
     if (!isInitialized) return; // Don't save until data is loaded
     const updatedClubs = clubs.map(club => {
-      if (club.id === clubId) {
+      // Handle both club name (e.g., 'English') and club id (e.g., 'default-english')
+      if (club.id === clubId || club.name === clubId) {
         return {
           ...club,
           participants: club.participants.filter(p => p.id !== participantId)
@@ -177,7 +180,8 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
   const addSession = async (clubId: string, session: Session) => {
     if (!isInitialized) return; // Don't save until data is loaded
     const updatedClubs = clubs.map(club => {
-      if (club.id === clubId) {
+      // Handle both club name (e.g., 'English') and club id (e.g., 'default-english')
+      if (club.id === clubId || club.name === clubId) {
         return {
           ...club,
           sessions: [...club.sessions, session]
@@ -193,7 +197,8 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
   const updateSession = async (clubId: string, sessionId: string, session: Session) => {
     if (!isInitialized) return; // Don't save until data is loaded
     const updatedClubs = clubs.map(club => {
-      if (club.id === clubId) {
+      // Handle both club name (e.g., 'English') and club id (e.g., 'default-english')
+      if (club.id === clubId || club.name === clubId) {
         return {
           ...club,
           sessions: club.sessions.map(s => 
@@ -211,7 +216,8 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
   const deleteSession = async (clubId: string, sessionId: string) => {
     if (!isInitialized) return; // Don't save until data is loaded
     const updatedClubs = clubs.map(club => {
-      if (club.id === clubId) {
+      // Handle both club name (e.g., 'English') and club id (e.g., 'default-english')
+      if (club.id === clubId || club.name === clubId) {
         return {
           ...club,
           sessions: club.sessions.filter(s => s.id !== sessionId)
