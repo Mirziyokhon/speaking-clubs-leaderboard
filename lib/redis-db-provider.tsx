@@ -80,7 +80,8 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
       
       const result = await response.json();
       if (result.success && result.data) {
-        return JSON.parse(result.data);
+        // Redis now returns object directly (no double serialization)
+        return result.data;
       }
       
       // If no data in API, return default clubs and save them

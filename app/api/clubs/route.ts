@@ -20,7 +20,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const clubs = await request.json();
-    await redis.set('clubs', JSON.stringify(clubs));
+    await redis.set('clubs', clubs);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error saving clubs:', error);
