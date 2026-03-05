@@ -1,0 +1,29 @@
+import { Redis } from '@upstash/redis';
+import { NextRequest, NextResponse } from 'next/server';
+
+// Initialize Redis on server side
+const redis = new Redis({
+  url: process.env.KV_REST_API_URL!,
+  token: process.env.KV_REST_API_TOKEN!,
+});
+
+export async function GET() {
+  try {
+    const clubsData = await redis.get('clubs');
+    return NextResponse.json({ success: true, data: clubsData });
+  } catch (error) {
+    console.error('Error fetching clubs:', error);
+    return NextResponse.json({ success: false, error: 'Failed to fetch clubs' }, { status: 500 });
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const clubs = await request.json();
+    await redis.set('clubs', JSON.stringify(clubs));
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error saving clubs:', error);
+    return NextResponse.json({ success: false, error: 'Failed to save clubs' }, { status: 500 });
+  }
+}

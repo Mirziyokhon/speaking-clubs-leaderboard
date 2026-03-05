@@ -1,29 +1,8 @@
 'use client';
 
-import { Redis } from '@upstash/redis';
 import { Club, Participant, Session } from '@/lib/clubContext';
 import { defaultClubs } from '@/lib/clubContext';
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-
-// Initialize Upstash Redis - Try KV_ variables first (more reliable)
-console.log('Environment variables:', {
-  url: process.env.KV_REST_API_URL,
-  token: process.env.KV_REST_API_TOKEN ? 'exists' : 'missing',
-  // Show all Redis variables for debugging
-  allRedisVars: {
-    KV_REST_API_URL: process.env.KV_REST_API_URL,
-    KV_REST_API_TOKEN: process.env.KV_REST_API_TOKEN ? 'exists' : 'missing',
-    REDIS_KV_REST_API_URL: process.env.REDIS_KV_REST_API_URL,
-    REDIS_KV_REST_API_TOKEN: process.env.REDIS_KV_REST_API_TOKEN ? 'exists' : 'missing',
-    REDIS_KV_URL: process.env.REDIS_KV_URL,
-    REDIS_URL: process.env.REDIS_URL,
-  }
-});
-
-const redis = new Redis({
-  url: process.env.KV_REST_API_URL!,
-  token: process.env.KV_REST_API_TOKEN!,
-});
 
 type DatabaseContextType = {
   clubs: Club[];
@@ -62,26 +41,23 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
     try {
       setSyncStatus('syncing');
       
-      // Only run Redis operations on client side
+      // Only run API operations on client side
       if (typeof window === 'undefined') {
-        console.log('Skipping Redis initialization on server side');
+        console.log('Skipping API initialization on server side');
         setClubs(defaultClubs);
         setIsOnline(false);
         setSyncStatus('offline');
         return;
       }
       
-      // Test Redis connection
-      await redis.ping();
-      
-      // Load data from Redis
-      const data = await loadFromRedis();
+      // Test API connection and load data
+      const data = await loadFromAPI();
       setClubs(data);
       setIsOnline(true);
       setSyncStatus('online');
-      console.log('Database connected to Upstash Redis');
+      console.log('Database connected via API');
     } catch (error) {
-      console.error('Failed to connect to Redis:', error);
+      console.error('Failed to connect to API:', error);
       setIsOnline(false);
       setSyncStatus('offline');
       // Keep default clubs as fallback
@@ -89,40 +65,56 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const loadFromRedis = async (): Promise<Club[]> => {
+  const loadFromAPI = async (): Promise<Club[]> => {
     try {
-      // Only run Redis operations on client side
+      // Only run API operations on client side
       if (typeof window === 'undefined') {
-        console.log('Skipping Redis load on server side');
+        console.log('Skipping API load on server side');
         return defaultClubs;
       }
       
-      const clubsData = await redis.get('clubs') as string;
-      if (clubsData) {
-        return JSON.parse(clubsData);
+      const response = await fetch('/api/clubs');
+      if (!response.ok) {
+        throw new Error('Failed to fetch clubs');
       }
       
-      // If no data in Redis, return default clubs and save them
-      await saveToRedis(defaultClubs);
+      const result = await response.json();
+      if (result.success && result.data) {
+        return JSON.parse(result.data);
+      }
+      
+      // If no data in API, return default clubs and save them
+      await saveToAPI(defaultClubs);
       return defaultClubs;
     } catch (error) {
-      console.error('Error loading from Redis:', error);
+      console.error('Error loading from API:', error);
       return defaultClubs;
     }
   };
 
-  const saveToRedis = async (clubsData: Club[]) => {
+  const saveToAPI = async (clubsData: Club[]) => {
     try {
-      // Only run Redis operations on client side
+      // Only run API operations on client side
       if (typeof window === 'undefined') {
-        console.log('Skipping Redis save on server side');
+        console.log('Skipping API save on server side');
         return;
       }
       
-      await redis.set('clubs', JSON.stringify(clubsData), { ex: 60 * 60 * 24 }); // 24 hours expiry
-      console.log('Data saved to Redis');
+      const response = await fetch('/api/clubs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(clubsData),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to save clubs');
+      }
+      
+      console.log('Data saved via API');
     } catch (error) {
-      console.error('Error saving to Redis:', error);
+      console.error('Error saving to API:', error);
     }
   };
 
@@ -138,7 +130,7 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
     });
     
     setClubs(updatedClubs);
-    await saveToRedis(updatedClubs);
+    await saveToAPI(updatedClubs);
   };
 
   const updateParticipant = async (clubId: string, participantId: string, participant: Participant) => {
@@ -155,7 +147,7 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
     });
     
     setClubs(updatedClubs);
-    await saveToRedis(updatedClubs);
+    await saveToAPI(updatedClubs);
   };
 
   const deleteParticipant = async (clubId: string, participantId: string) => {
@@ -170,7 +162,7 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
     });
     
     setClubs(updatedClubs);
-    await saveToRedis(updatedClubs);
+    await saveToAPI(updatedClubs);
   };
 
   const addSession = async (clubId: string, session: Session) => {
@@ -185,7 +177,7 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
     });
     
     setClubs(updatedClubs);
-    await saveToRedis(updatedClubs);
+    await saveToAPI(updatedClubs);
   };
 
   const updateSession = async (clubId: string, sessionId: string, session: Session) => {
@@ -202,7 +194,7 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
     });
     
     setClubs(updatedClubs);
-    await saveToRedis(updatedClubs);
+    await saveToAPI(updatedClubs);
   };
 
   const deleteSession = async (clubId: string, sessionId: string) => {
@@ -217,7 +209,7 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
     });
     
     setClubs(updatedClubs);
-    await saveToRedis(updatedClubs);
+    await saveToAPI(updatedClubs);
   };
 
   return (
